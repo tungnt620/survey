@@ -1,12 +1,9 @@
 import {
   Button, Checkbox,
-  FormControl,
-  FormErrorMessage, Input,
+  Input,
   ListItem,
-  Select,
   UnorderedList
 } from "@chakra-ui/react";
-import {formRules, useFormValidator} from "../helpers/FormValidator/index.js";
 import {useState} from "preact/hooks";
 
 const numberFormatter = new Intl.NumberFormat();
@@ -14,7 +11,6 @@ const numberFormatter = new Intl.NumberFormat();
 const Rule2Screen = ({stateMachine, sendMachineEvent}) => {
   const version = stateMachine.context.version;
   const [checked, setChecked] = useState(false);
-  const [exampleXMoney, setExampleXMoney] = useState(150000);
 
   const onNext = () => {
     sendMachineEvent('NEXT' + '_' + version.toUpperCase())
@@ -22,6 +18,7 @@ const Rule2Screen = ({stateMachine, sendMachineEvent}) => {
 
   const fieldA = stateMachine.context.fieldA;
 
+  const exampleXMoney = 150000;
   const exampleXMoneyFormatted = numberFormatter.format(exampleXMoney);
 
   return (
@@ -41,7 +38,9 @@ const Rule2Screen = ({stateMachine, sendMachineEvent}) => {
             Ví dụ câu hỏi được chọn là:
           </div>
           <div className='p-8 text-cyan-600 italic'>
-            Tôi thấy <Input width='100px' type='number' value={exampleXMoney} /> <b>VND</b> cho tôi ngay ngày hôm nay và <b>200,000
+            Tôi thấy <Input width='100px' type='number' readonly={true} value={exampleXMoney}/> <b>VND</b> cho tôi ngay
+            ngày hôm nay
+            và <b>200,000
             VND</b> cho <b>{fieldA}</b> sau <b>30 ngày (C)</b> là bằng nhau về giá trị.
             <div className='flex justify-center mt-4'>
               Bạn điền vào chỗ trống <div

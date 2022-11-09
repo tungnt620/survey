@@ -1,6 +1,10 @@
+import {combinations, shuffle} from "../index.js";
+
 export const getGameMachine = ({version}) => {
+  const questions = shuffle(combinations)
+
   return {
-    context: {email: '', yearOfBirth: null, fieldA: '', version, answer: [], currentQuestionNo: null},
+    context: {email: '', yearOfBirth: null, fieldA: '', version, answer: [], questions, currentQuestionNo: 1},
     initial: 'intro',
     states: {
       intro: {
@@ -53,19 +57,12 @@ export const getGameMachine = ({version}) => {
               return context.currentQuestionNo < 25;
             }
           },
-          NEXT: {
+          FINISH: {
             target: 'result',
             guard({context}) {
               return context.currentQuestionNo === 25;
             }
           }
-        },
-        effect({send, setContext, event, context}) {
-          if (!context.currentQuestionNo) {
-            setContext({currentQuestionNo: 1});
-          }
-          console.log('question', event, context);
-          // Save answer to context
         },
       },
       result: {}

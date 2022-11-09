@@ -17,7 +17,8 @@
     "lodash": "^4.17.21",
     "pocketbase": "^0.7.4",
     "preact": "^10.11.2",
-    "preact-router": "^4.1.0"
+    "preact-router": "^4.1.0",
+    "react-icons": "^4.6.0"
   },
   "devDependencies": {
     "@cassiozen/usestatemachine": "^1.0.1",
