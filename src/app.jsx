@@ -20,11 +20,7 @@ export function App() {
   return (
     <ChakraProvider>
       <ToastMessage/>
-      <Router>
-        <Game path="/" stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
-        <Game path="/version-a" stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
-        <Game path="/version-b" stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
-      </Router>
+      <Game stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
     </ChakraProvider>
   )
 }
