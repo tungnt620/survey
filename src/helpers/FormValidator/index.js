@@ -1,2 +1,2 @@
-export * from './useFormValidator';
-export * from './formRules';
+export * from "./useFormValidator";
+export * from "./formRules";

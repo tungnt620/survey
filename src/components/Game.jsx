@@ -5,25 +5,40 @@ import Rule2Screen from "./4.Rule2Screen.jsx";
 import Rule3Screen from "./5.Rule3Screen.jsx";
 import QuestionScreen from "./6.QuestionScreen.jsx";
 
-const Game = ({stateMachine, sendMachineEvent}) => {
+const Game = ({ stateMachine, sendMachineEvent }) => {
   const currentState = stateMachine.value;
 
   switch (currentState) {
-    case 'intro':
-      return <IntroScreen sendMachineEvent={sendMachineEvent}/>
-    case 'playerInformation':
-      return <PlayerInformationScreen sendMachineEvent={sendMachineEvent}/>
-    case 'rule1':
-      return <Rule1Screen sendMachineEvent={sendMachineEvent}/>
-    case 'rule2':
-      return <Rule2Screen stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
-    case 'rule3':
-      return <Rule3Screen stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
-    case 'question':
-      return <QuestionScreen stateMachine={stateMachine} sendMachineEvent={sendMachineEvent}/>
+    case "intro":
+      return <IntroScreen sendMachineEvent={sendMachineEvent} />;
+    case "playerInformation":
+      return <PlayerInformationScreen sendMachineEvent={sendMachineEvent} />;
+    case "rule1":
+      return <Rule1Screen sendMachineEvent={sendMachineEvent} />;
+    case "rule2":
+      return (
+        <Rule2Screen
+          stateMachine={stateMachine}
+          sendMachineEvent={sendMachineEvent}
+        />
+      );
+    case "rule3":
+      return (
+        <Rule3Screen
+          stateMachine={stateMachine}
+          sendMachineEvent={sendMachineEvent}
+        />
+      );
+    case "question":
+      return (
+        <QuestionScreen
+          stateMachine={stateMachine}
+          sendMachineEvent={sendMachineEvent}
+        />
+      );
     default:
-      return <div>Not found</div>
+      return <div>Not found</div>;
   }
-}
+};
 
 export default Game;

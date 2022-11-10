@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash';
-import { useState } from 'preact/hooks';
-import { validateFormData } from './validateForm';
+import { isEmpty } from "lodash";
+import { useState } from "preact/hooks";
+import { validateFormData } from "./validateForm";
 
 export const useFormValidator = <T>({
   defaultData,
@@ -9,7 +9,9 @@ export const useFormValidator = <T>({
   defaultData: T;
   rules: Partial<Record<keyof T, unknown[]>>;
 }) => {
-  const [formErrors, setFormErrors] = useState<Partial<Record<keyof T, string>>>({});
+  const [formErrors, setFormErrors] = useState<
+    Partial<Record<keyof T, string>>
+  >({});
   const [formData, setFormData] = useState<T>(defaultData);
 
   const validate = (formData: T) => {

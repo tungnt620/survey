@@ -1,9 +1,9 @@
-import {useToast} from "@chakra-ui/react";
-import {toastStore} from "../../store/toast.js";
-import {useEffect} from "preact/hooks";
+import { useToast } from "@chakra-ui/react";
+import { toastStore } from "../../store/toast.js";
+import { useEffect } from "preact/hooks";
 
 const ToastMessage = () => {
-  const toast = useToast()
+  const toast = useToast();
 
   const { message, type } = toastStore.value;
 
@@ -14,11 +14,11 @@ const ToastMessage = () => {
       toast({
         title: message,
         status: type,
-        duration: type === 'error' ? 1000 * 1000 : 5000,
+        duration: type === "error" ? 1000 * 1000 : 5000,
         isClosable: true,
-      })
+      });
     }
-  }, [message, type])
+  }, [message, type]);
 
   return null;
 };
