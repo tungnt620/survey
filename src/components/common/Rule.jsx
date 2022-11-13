@@ -38,7 +38,7 @@ const Rule = ({ stateMachine }) => {
         </div>
       </div>
       <div className="mt-2">
-        Ban tổ chức sẽ bốc thăm ngẫu nhiên từ 5,000 VND đến 200,000VND. Nếu số
+        Ban tổ chức sẽ bốc thăm ngẫu nhiên từ 5,000 VND đến 200,000 VND. Nếu số
         tiền trên thăm nhỏ hơn hoặc bằng số tiền bạn điền (
         {exampleXMoneyFormatted} VND), chúng tôi sẽ gửi cho {fieldA} 200,000 VND
         sau 30 ngày kể từ khi nhận được phiếu trả lời của bạn. Nếu số tiền trên

@@ -1,4 +1,3 @@
-import { useGetVersion } from "../helpers";
 import {
   Button,
   FormControl,
@@ -7,6 +6,9 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { formRules, useFormValidator } from "../helpers/FormValidator/index.js";
+import { useSavePlayerInfo } from "../api/index.js";
+import { useEffect } from "preact/hooks";
+import { toastStore } from "../store/toast.js";
 
 const PlayerInformationScreen = ({ sendMachineEvent }) => {
   const { formData, formErrors, validate, setFieldValue } = useFormValidator({
@@ -25,11 +27,32 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
     },
   });
 
+  const { status, execute, error } = useSavePlayerInfo(formData);
+
+  useEffect(() => {
+    if (status === "success") {
+      sendMachineEvent({ type: "NEXT", payload: formData });
+    } else if (status === "error") {
+      console.log({ error });
+      if (error.data?.data?.email?.code === "validation_not_unique") {
+        toastStore.value = {
+          message: "This email already exists",
+          type: "error",
+        };
+      } else {
+        toastStore.value = {
+          message: error.message,
+          type: "error",
+        };
+      }
+    }
+  }, [status]);
+
   const onNext = () => {
     const { isValid } = validate(formData);
 
     if (isValid) {
-      sendMachineEvent({ type: "NEXT", payload: formData });
+      execute();
     }
   };
 
@@ -78,7 +101,10 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
         <div className="flex-1" />
         <Button
           onClick={onNext}
-          disabled={Object.values(formErrors).some((error) => !!error)}
+          disabled={
+            Object.values(formErrors).some((error) => !!error) ||
+            status === "loading"
+          }
           colorScheme="blue"
           className="font-bold text-lg"
         >

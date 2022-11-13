@@ -1,29 +1,56 @@
 import PocketBase from "pocketbase";
-import { toastStore } from "../store/toast.js";
-const client = new PocketBase("http://127.0.0.1:8090");
+import { useCallback, useEffect, useState } from "preact/hooks";
+const client = new PocketBase("https://survey.confession.vn");
 
-client.records
-  .getList("myCollection")
-  .then((records) => {
-    console.log(records);
-  })
-  .catch((error) => {
-    toastStore.value = {
-      message: error.message,
-      type: "error",
-    };
+export const useQuery = ({ serviceFunc, lazy = false }) => {
+  const [state, setState] = useState({
+    status: "",
+    error: null,
+    data: null,
   });
 
-export const saveAnswer = async (answer) => {
-  try {
-    const result = await client.records.create("answer", answer);
-    console.log("Result:", result);
-  } catch (error) {
-    console.log("Error:", error);
+  const execute = useCallback(async () => {
+    setState({ status: "loading", error: null, data: null });
 
-    toastStore.value = {
-      message: error.message,
-      type: "error",
-    };
-  }
+    try {
+      const data = await serviceFunc();
+
+      setState({
+        status: "success",
+        error: null,
+        data,
+      });
+    } catch (error) {
+      setState({
+        status: "error",
+        error,
+        data: null,
+      });
+    }
+  }, [serviceFunc]);
+
+  useEffect(() => {
+    if (!lazy) {
+      execute();
+    }
+  }, [execute, lazy]);
+
+  return {
+    ...state,
+    execute,
+  };
+};
+
+export const useSaveAnswer = async (answer, lazy = true) => {
+  return useQuery({
+    serviceFunc: () => client.records.create("answer", answer),
+    lazy,
+  });
+};
+
+export const useSavePlayerInfo = (playerInfo) => {
+  return useQuery({
+    serviceFunc: () => client.records.create("player", playerInfo),
+    lazy: true,
+  });
 };

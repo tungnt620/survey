@@ -1,23 +1,30 @@
 import { combinations, shuffle } from "../index.js";
 
+const getInitialContextValue = (questions, version) => {
+  return {
+    email: "",
+    yearOfBirth: null,
+    fieldA: "",
+    version,
+    answer: [],
+    questions,
+    currentQuestionNo: 1,
+  };
+};
+
 export const getGameMachine = ({ version }) => {
   const questions = shuffle(combinations);
 
   return {
-    context: {
-      email: "",
-      yearOfBirth: null,
-      fieldA: "",
-      version,
-      answer: [],
-      questions,
-      currentQuestionNo: 1,
-    },
+    context: getInitialContextValue(questions, version),
     initial: "intro",
     states: {
       intro: {
         on: {
           NEXT: "playerInformation",
+        },
+        effect({ setContext }) {
+          setContext(() => getInitialContextValue(questions, version));
         },
       },
       playerInformation: {
@@ -72,8 +79,41 @@ export const getGameMachine = ({ version }) => {
             },
           },
         },
+        effect({ setContext, event, context }) {
+          const { amount } = event.payload || {};
+          const currentQuestionNo = context.currentQuestionNo;
+
+          if (amount) {
+            const newAnswers = [...context.answer];
+            newAnswers[currentQuestionNo - 1] = { amount };
+
+            setContext((context) => ({
+              ...context,
+              answer: newAnswers,
+              currentQuestionNo: currentQuestionNo + 1,
+            }));
+          }
+        },
       },
-      result: {},
+      result: {
+        on: {
+          END: "intro",
+        },
+        effect({ setContext, event, context }) {
+          const { amount } = event.payload || {};
+          const currentQuestionNo = context.currentQuestionNo;
+
+          if (amount) {
+            const newAnswers = [...context.answer];
+            newAnswers[currentQuestionNo - 1] = { amount };
+
+            setContext((context) => ({
+              ...context,
+              answer: newAnswers,
+            }));
+          }
+        },
+      },
     },
   };
 };

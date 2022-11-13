@@ -4,6 +4,7 @@ import Rule1Screen from "./3.Rule1Screen";
 import Rule2Screen from "./4.Rule2Screen.jsx";
 import Rule3Screen from "./5.Rule3Screen.jsx";
 import QuestionScreen from "./6.QuestionScreen.jsx";
+import ResultScreen from "./7.ResultScreen.jsx";
 
 const Game = ({ stateMachine, sendMachineEvent }) => {
   const currentState = stateMachine.value;
@@ -32,6 +33,13 @@ const Game = ({ stateMachine, sendMachineEvent }) => {
     case "question":
       return (
         <QuestionScreen
+          stateMachine={stateMachine}
+          sendMachineEvent={sendMachineEvent}
+        />
+      );
+    case "result":
+      return (
+        <ResultScreen
           stateMachine={stateMachine}
           sendMachineEvent={sendMachineEvent}
         />

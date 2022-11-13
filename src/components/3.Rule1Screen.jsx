@@ -40,13 +40,13 @@ const Rule1Screen = ({ sendMachineEvent }) => {
           </div>
           <UnorderedList>
             <ListItem>
-              Bạn sẽ được chi trả một số tiền trong khoảng 5,000VND đến
-              290,000VND sau 1 ngày.
+              Bạn sẽ được chi trả một số tiền trong khoảng <b>5,000 VND</b> đến{" "}
+              <b>290,000 VND</b> sau 1 ngày.
             </ListItem>
             <ListItem>
               Tổ chức thiện nguyện mà bạn lựa chọn sẽ được chi trả khoảng tiền
-              từ 50,000 VND cho đến 290,000VND sau khoảng thời gian từ 3 ngày
-              cho đến 60 ngày.
+              từ <b>50,000 VND</b> cho đến <b>290,000 VND</b> sau khoảng thời
+              gian từ <b>3 ngày</b> cho đến <b>60 ngày</b>.
             </ListItem>
           </UnorderedList>
           <div className="mt-4">

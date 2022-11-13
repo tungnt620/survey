@@ -14,35 +14,35 @@ export const useGetVersion = () => {
 
 export const combinations = [
   {
-    fieldM: 270,
-    fieldT: 14,
-  },
-  {
-    fieldM: 180,
+    fieldM: 50,
     fieldT: 3,
   },
   {
-    fieldM: 270,
-    fieldT: 7,
-  },
-  {
-    fieldM: 180,
-    fieldT: 14,
-  },
-  {
     fieldM: 50,
     fieldT: 7,
   },
   {
-    fieldM: 270,
+    fieldM: 50,
+    fieldT: 14,
+  },
+  {
+    fieldM: 50,
     fieldT: 30,
   },
   {
-    fieldM: 125,
-    fieldT: 14,
+    fieldM: 50,
+    fieldT: 60,
   },
   {
-    fieldM: 50,
+    fieldM: 80,
+    fieldT: 3,
+  },
+  {
+    fieldM: 80,
+    fieldT: 7,
+  },
+  {
+    fieldM: 80,
     fieldT: 14,
   },
   {
@@ -51,6 +51,10 @@ export const combinations = [
   },
   {
     fieldM: 80,
+    fieldT: 60,
+  },
+  {
+    fieldM: 125,
     fieldT: 3,
   },
   {
@@ -58,60 +62,56 @@ export const combinations = [
     fieldT: 7,
   },
   {
-    fieldM: 180,
-    fieldT: 30,
-  },
-  {
-    fieldM: 80,
+    fieldM: 125,
     fieldT: 14,
   },
   {
-    fieldM: 270,
-    fieldT: 60,
-  },
-  {
     fieldM: 125,
     fieldT: 30,
   },
   {
-    fieldM: 180,
+    fieldM: 125,
     fieldT: 60,
   },
   {
-    fieldM: 80,
-    fieldT: 60,
+    fieldM: 190,
+    fieldT: 3,
   },
   {
-    fieldM: 50,
-    fieldT: 60,
-  },
-  {
-    fieldM: 180,
+    fieldM: 190,
     fieldT: 7,
   },
   {
-    fieldM: 50,
+    fieldM: 190,
+    fieldT: 14,
+  },
+  {
+    fieldM: 190,
     fieldT: 30,
   },
   {
-    fieldM: 50,
-    fieldT: 3,
-  },
-  {
-    fieldM: 125,
+    fieldM: 190,
     fieldT: 60,
   },
   {
-    fieldM: 80,
+    fieldM: 290,
+    fieldT: 3,
+  },
+  {
+    fieldM: 290,
     fieldT: 7,
   },
   {
-    fieldM: 125,
-    fieldT: 3,
+    fieldM: 290,
+    fieldT: 14,
   },
   {
-    fieldM: 270,
-    fieldT: 3,
+    fieldM: 290,
+    fieldT: 30,
+  },
+  {
+    fieldM: 290,
+    fieldT: 60,
   },
 ];
 

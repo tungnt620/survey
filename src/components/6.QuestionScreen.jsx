@@ -9,7 +9,7 @@ import {
   SliderTrack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import RuleModal from "./common/RuleModal.js";
 
@@ -26,25 +26,43 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
   const fieldT = questions[currentQuestionIndex].fieldT;
 
   const version = stateMachine.context.version;
-  const [amount, setAmount] = useState(
-    Math.floor(Math.floor(fieldM / 2) / 5000) * 5000
-  );
+  const [amount, setAmount] = useState(0);
+
+  useEffect(() => {
+    setAmount(Math.floor(Math.floor(fieldM / 2) / 5000) * 5000);
+  }, [currentQuestionNo, fieldM]);
 
   const onNext = () => {
     if (currentQuestionNo === questions.length) {
-      sendMachineEvent("FINISH");
+      sendMachineEvent({
+        type: "FINISH",
+        payload: {
+          amount,
+        },
+      });
     } else {
-      sendMachineEvent("NEXT_QUESTION");
+      sendMachineEvent({
+        type: "NEXT_QUESTION",
+        payload: {
+          amount,
+        },
+      });
     }
   };
 
   const amountFormatted = numberFormatter.format(amount);
   const fieldMFormatted = numberFormatter.format(fieldM);
 
+  const yourChance = Math.floor(((amount - 5000) / (fieldM - 5000)) * 100);
+  const orgChance = 100 - yourChance;
+
   return (
     <div className="flex flex-col w-full h-screen">
       <div className="flex flex-col justify-center w-full h-full items-center">
         <div className="pr-16 pl-16">
+          <div className="mb-4">
+            <b className={"text-xl"}>Câu {currentQuestionNo}</b>
+          </div>
           <div className="mb-4">
             <b>Điền vào chỗ trống:</b>
           </div>
@@ -58,11 +76,31 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
           <div className="mt-16 max-w-screen-md">
             <Slider
               defaultValue={amount}
+              value={amount}
               min={5000}
               max={fieldM}
               step={5000}
               onChange={(val) => setAmount(val)}
             >
+              <SliderMark
+                value={5000}
+                mt={2}
+                ml={-10}
+                fontSize={18}
+                fontWeight="bold"
+              >
+                5,000 VND
+              </SliderMark>
+              <SliderMark
+                value={fieldM}
+                mt={2}
+                ml={-10}
+                fontSize={18}
+                width={"120px"}
+                fontWeight="bold"
+              >
+                {fieldMFormatted} VND
+              </SliderMark>
               <SliderMark
                 value={amount}
                 textAlign="center"
@@ -83,6 +121,18 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
                 <Box color="tomato" as={MdOutlineAttachMoney} size={20} />
               </SliderThumb>
             </Slider>
+
+            {version === "A" && (
+              <div className="mt-8">
+                <div>
+                  Xác suất bạn được nhận tiền là <b>{yourChance}%</b>
+                </div>
+                <div>
+                  Xác suất tổ chức thiện nguyện {fieldA} được nhận tiền là{" "}
+                  <b>{orgChance}%</b>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

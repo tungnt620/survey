@@ -15,7 +15,7 @@ const Rule3Screen = ({ sendMachineEvent }) => {
           <div className="mb-4">
             Diễn giải: Ưu tiên thời gian đối với xã hội nghiên cứu về cách mà xã
             hội định giá những lợi ích hiện tại so với lợi ích tương lai. Thực
-            tế, giữa phương án có 100,000VND ngay hôm nay và 100,000VND sau 1
+            tế, giữa phương án có 100,000 VND ngay hôm nay và 100,000 VND sau 1
             tuần, hầu hết tất cả chúng ta đều sẽ chọn có tiền ngay. Vậy có thể
             nói, lợi ích xuất hiện trong hiện tại thường được xem là đáng giá
             hơn là chính nó xuất hiện trong tương lai.
