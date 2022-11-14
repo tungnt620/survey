@@ -2,6 +2,7 @@ import { combinations, shuffle } from "../index.js";
 
 const getInitialContextValue = (questions, version) => {
   return {
+    playerId: null,
     email: "",
     yearOfBirth: null,
     fieldA: "",

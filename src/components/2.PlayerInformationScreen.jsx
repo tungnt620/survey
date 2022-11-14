@@ -6,7 +6,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { formRules, useFormValidator } from "../helpers/FormValidator/index.js";
-import { useSavePlayerInfo } from "../api/index.js";
+import { useCreatePlayerInfo } from "../api/index.js";
 import { useEffect } from "preact/hooks";
 import { toastStore } from "../store/toast.js";
 
@@ -27,13 +27,15 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
     },
   });
 
-  const { status, execute, error } = useSavePlayerInfo(formData);
+  const { status, execute, error, data } = useCreatePlayerInfo(formData);
 
   useEffect(() => {
     if (status === "success") {
-      sendMachineEvent({ type: "NEXT", payload: formData });
+      sendMachineEvent({
+        type: "NEXT",
+        payload: { ...formData, playerId: data.id },
+      });
     } else if (status === "error") {
-      console.log({ error });
       if (error.data?.data?.email?.code === "validation_not_unique") {
         toastStore.value = {
           message: "This email already exists",

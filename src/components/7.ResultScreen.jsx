@@ -1,5 +1,8 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import RuleModal from "./common/RuleModal.js";
+import { useUpdatePlayerInfo } from "../api/index.js";
+import { useEffect } from "preact/hooks";
+import { toastStore } from "../store/toast.js";
 
 const numberFormatter = new Intl.NumberFormat();
 
@@ -25,6 +28,30 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
   const fieldY = options[Math.floor(Math.random() * options.length)];
   const fieldYFormatted = numberFormatter.format(fieldY);
   const fieldMFormatted = numberFormatter.format(fieldM);
+
+  const { status, execute, error } = useUpdatePlayerInfo(
+    stateMachine.context.playerId,
+    {
+      selectedQuestionNo: fieldX,
+      fieldY,
+      fieldM,
+      amountFromUser,
+      decision: fieldY >= amountFromUser ? "sendToOrg" : "sendToUser",
+    }
+  );
+
+  useEffect(() => {
+    if (fieldY) execute();
+  }, [fieldY]);
+
+  useEffect(() => {
+    if (status === "error") {
+      toastStore.value = {
+        message: error.message,
+        type: "error",
+      };
+    }
+  }, [status]);
 
   const onNext = () => {
     sendMachineEvent("END");

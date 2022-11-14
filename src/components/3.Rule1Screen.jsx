@@ -7,8 +7,11 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { formRules, useFormValidator } from "../helpers/FormValidator/index.js";
+import { useUpdatePlayerInfo } from "../api/index.js";
+import { useEffect } from "preact/hooks";
+import { toastStore } from "../store/toast.js";
 
-const Rule1Screen = ({ sendMachineEvent }) => {
+const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
   const { formData, formErrors, validate, setFieldValue } = useFormValidator({
     defaultData: {
       fieldA: "",
@@ -18,17 +21,32 @@ const Rule1Screen = ({ sendMachineEvent }) => {
     },
   });
 
+  const { status, execute, error } = useUpdatePlayerInfo(
+    stateMachine.context.playerId,
+    formData
+  );
+
+  useEffect(() => {
+    if (status === "success") {
+      sendMachineEvent({
+        type: "NEXT",
+        payload: formData,
+      });
+    } else if (status === "error") {
+      toastStore.value = {
+        message: error.message,
+        type: "error",
+      };
+    }
+  }, [status]);
+
   const onNext = () => {
     const { isValid } = validate(formData);
 
     if (isValid) {
-      sendMachineEvent({ type: "NEXT", payload: formData });
+      execute();
     }
   };
-
-  console.log({
-    formErrors,
-  });
 
   return (
     <div className="flex flex-col w-full h-screen">
@@ -75,7 +93,10 @@ const Rule1Screen = ({ sendMachineEvent }) => {
         <div className="flex-1" />
         <Button
           onClick={onNext}
-          disabled={Object.values(formErrors).some((error) => !!error)}
+          disabled={
+            Object.values(formErrors).some((error) => !!error) ||
+            status === "loading"
+          }
           colorScheme="blue"
           className="font-bold text-lg"
         >

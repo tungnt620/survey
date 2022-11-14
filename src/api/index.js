@@ -41,16 +41,23 @@ export const useQuery = ({ serviceFunc, lazy = false }) => {
   };
 };
 
-export const useSaveAnswer = async (answer, lazy = true) => {
+export const useCreateAnswer = (answer) => {
   return useQuery({
     serviceFunc: () => client.records.create("answer", answer),
-    lazy,
+    lazy: true,
   });
 };
 
-export const useSavePlayerInfo = (playerInfo) => {
+export const useCreatePlayerInfo = (playerInfo) => {
   return useQuery({
     serviceFunc: () => client.records.create("player", playerInfo),
+    lazy: true,
+  });
+};
+
+export const useUpdatePlayerInfo = (playerId, playerInfo) => {
+  return useQuery({
+    serviceFunc: () => client.records.update("player", playerId, playerInfo),
     lazy: true,
   });
 };
