@@ -167,7 +167,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
         </Button>
       </div>
       <div className="w-full">
-        <Progress hasStripe value={currentQuestionNo} max={25} />
+        <Progress hasStripe value={currentQuestionNo} max={questions.length} />
       </div>
       <RuleModal
         stateMachine={stateMachine}
