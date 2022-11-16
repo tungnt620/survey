@@ -1,5 +1,6 @@
 import { useGetVersion } from "../helpers";
 import { Button } from "@chakra-ui/react";
+import logo from "../assets/logo.png";
 
 const IntroScreen = ({ sendMachineEvent }) => {
   const version = useGetVersion();
@@ -7,7 +8,9 @@ const IntroScreen = ({ sendMachineEvent }) => {
   return (
     <div className="flex flex-col w-full h-screen p-2 items-center">
       <div className="flex flex-col justify-center w-full h-full max-w-4xl items-center">
-        <div className="font-bold text-base mb-14">Logo here</div>
+        <div className="font-bold text-base mb-14">
+          <img width={150} src={logo} alt={"logo"} />
+        </div>
         <div className="font-bold text-5xl mb-14">
           “Trò chơi” Ưu tiên thời gian ({version})
         </div>
