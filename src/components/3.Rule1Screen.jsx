@@ -10,31 +10,41 @@ import { formRules, useFormValidator } from "../helpers/FormValidator/index.js";
 import { useUpdatePlayerInfo } from "../api/index.js";
 import { useEffect } from "preact/hooks";
 import { toastStore } from "../store/toast.js";
+import blueDragon from "../assets/blue_dragon.png";
+import hoiChuThapDo from "../assets/hoi_chu_thap_do.png";
+import gaia from "../assets/gaia.png";
+import doiCuuTro from "../assets/doi_cuu_tro_cho_meo_sg_time.png";
+import nguoiKhuyetTat from "../assets/nguoi_khuyet_tat.png";
 
 const orgs = [
   {
     name: "Y tế - Hội chữ thập đỏ - Red Cross Vietnam",
+    img: hoiChuThapDo,
     description:
       "Hội Chữ thập đỏ Việt Nam là tổ chức xã hội nhân đạo của quần chúng. Hội chăm lo hỗ trợ về vật chất và tinh thần cho những người khó khăn, nạn nhân chiến tranh, nạn nhân thiên tai, thảm họa; tham gia chăm sóc sức khỏe ban đầu cho nhân dân; vận động các tổ chức, cá nhân tham gia các hoạt động nhân đạo do Hội tổ chức.\n",
   },
   {
     name: "Blue Dragon Children’s Foundation",
+    img: blueDragon,
     description:
       "Tổ chức Trẻ em Rồng Xanh (tên tiếng Anh: Blue Dragon Children's Foundation) là một tổ chức phi chính phủ có trụ sở tại Hà Nội, Việt Nam. Sứ mệnh của tổ chức này bao gồm giải cứu trẻ em đường phố, trẻ em, phụ nữ thoát khỏi nạn buôn bán người, lao động cưỡng bức và nô lệ, đồng thời cung cấp nơi ở, giáo dục và việc làm cho các nạn nhân sau khi được giải cứu.",
   },
   {
     name: "Trung tâm bảo tồn thiên nhiên Gaia - Gaia Nature Conservation",
+    img: gaia,
     description:
       "Trung tâm bảo tồn thiên nhiên Gaia trao quyền và thúc đẩy thực hiện các hoạt động bảo tồn thiên nhiên, bảo vệ môi trường, đặc biệt tại Việt Nam nhằm tạo dựng một tương lai nơi con người sống hòa hợp với Mẹ Thiên nhiên.\n" +
       "Hiện nay Trung tâm đang tổ chức trồng rừng tại Vườn Quốc Gia Bạch Mã vào tháng 12/2022. Với mỗi 95,000 VND quyên góp là bạn đã trồng được một cây gỗ lớn tại Vườn Quốc Gia Bạch Mã, giúp giảm thiên tai bão lũ ở vùng hạ lưu, hấp thụ CO2, và bảo tồn đa dạng sinh học nơi đây.  ",
   },
   {
     name: "Hội Bảo trợ người khuyết tật và trẻ em mồ côi Thành phố Hồ Chí Minh",
+    img: nguoiKhuyetTat,
     description:
       "Hội Bảo trợ Người khuyết tật và Trẻ mồ côi TPHCM thành lập năm 1999 nhằm kêu gọi sự đóng góp của xã hội, của các nhà hảo tâm chăm lo cho người khuyết tật và trẻ mồ côi, tạo điều kiện cho các cháu học tập, phát triển và hòa nhập với cuộc sống xã hội. Qua hơn 20 năm hoạt động với nhiều cố gắng, Hội Bảo trợ Người khuyết tật và Trẻ mồ côi TPHCM đã được các tổ chức, cá nhân đồng hành đem lại những lợi ích thiết thực cho những người kém may mắn, có cơ hội vươn lên trong cuộc sống…",
   },
   {
     name: "Cứu hộ chó mèo Sài Gòn Time – SGT",
+    img: doiCuuTro,
     description: (
       <div>
         Giải cứu các bé chó mèo tại Sài Gòn:
@@ -86,6 +96,12 @@ const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
     }
   };
 
+  const selectedOrg = orgs.find((org) => org.name === formData.fieldA);
+
+  console.log({
+    selectedOrg,
+  });
+
   return (
     <div className="flex flex-col w-full h-screen p-2 items-center">
       <div className="flex flex-col justify-center w-full h-full items-center max-w-4xl">
@@ -118,9 +134,18 @@ const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
               <FormErrorMessage>{formErrors.fieldA}</FormErrorMessage>
             )}
           </FormControl>
-          <div className={"mt-4"}>
-            {orgs.find((org) => org.name === formData.fieldA)?.description}
-          </div>
+          {selectedOrg && (
+            <div className="flex mt-8">
+              <div className="w-fit">
+                <img src={selectedOrg.img} width={150} />
+              </div>
+              <div className={"w-full flex-auto ml-8"}>
+                <b>Mô tả hoạt động:</b>
+                <br />
+                {selectedOrg.description}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex mb-4 w-full justify-between">

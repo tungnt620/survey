@@ -5,6 +5,8 @@ const getInitialContextValue = (questions, version) => {
     playerId: null,
     email: "",
     yearOfBirth: null,
+    sex: null,
+    salary: null,
     fieldA: "",
     version,
     answer: [],

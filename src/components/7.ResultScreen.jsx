@@ -56,6 +56,9 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
 
   useEffect(() => {
     if (status === "error") {
+      console.log({
+        error,
+      });
       toastStore.value = {
         message: error.message,
         type: "error",
@@ -93,7 +96,7 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
           <div>
             {isSendToOrg ? (
               <div>
-                Chúng tôi sẽ gửi cho tổ chức{" "}
+                Chúng tôi sẽ gửi <b>{fieldMFormatted} VND</b> cho{" "}
                 <b>
                   {fieldA} {fieldMFormatted} VND
                 </b>{" "}

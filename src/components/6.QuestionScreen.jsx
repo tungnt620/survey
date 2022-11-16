@@ -45,7 +45,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
   }, [currentQuestionNo]);
 
   useEffect(() => {
-    setAmount(Math.floor(Math.floor(fieldM / 2) / 5000) * 5000);
+    setAmount(fieldM);
   }, [currentQuestionNo, fieldM]);
 
   const { status, execute, error } = useCreateAnswer({
@@ -105,50 +105,52 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
           </div>
           <div className="mb-4">
             Tôi thấy{" "}
-            <Input readonly={true} width="100px" type="number" value={amount} />{" "}
+            <NumberInput
+              value={amount}
+              step={5000}
+              min={5000}
+              max={fieldM}
+              onChange={(valueString) => setAmount(valueString)}
+              onKeyPress={(e) => {
+                if (e.key === "e") {
+                  e.preventDefault();
+                }
+              }}
+              onBlur={(e) => {
+                const intValue = parseInt(e.target.value);
+
+                if (intValue >= 5000 && intValue <= fieldM) {
+                  setAmount(Math.round(intValue / 5000) * 5000);
+                }
+              }}
+              size={"lg"}
+              allowMouseWheel
+              className={"border-blue-500 inline-flex"}
+              width={140}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>{" "}
             <b>VND</b> cho tôi ngay ngày hôm nay và{" "}
             <b className="text-xl text-blue-500">{fieldMFormatted} VND</b> cho{" "}
             {fieldA} sau <b className="text-xl text-blue-500">{fieldT} ngày </b>{" "}
             là bằng nhau về giá trị.
           </div>
-          <div className="mt-8 flex items-center flex-col">
-            <FormControl className="mt-4" width="380px">
-              <NumberInput
-                value={amount}
-                step={5000}
-                min={5000}
-                max={fieldM}
-                onChange={(valueString) => setAmount(valueString)}
-                onKeyPress={(e) => {
-                  if (e.key === "e") {
-                    e.preventDefault();
-                  }
-                }}
-                size={"lg"}
-                allowMouseWheel
-                className={"border-blue-500"}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <FormHelperText>
-                Các giá trị sẽ được làm tròn thành 5,000 VND gần nhất (vd: 13000
-                -> 15000; 11000 -> 10000)
-              </FormHelperText>
-            </FormControl>
-
-            {version === "A" && (
-              <div className="mt-8">
-                <div>
-                  Xác suất tổ chức thiện nguyện <b>{fieldA}</b> được nhận tiền
-                  là <b>{orgChance}%</b>
-                </div>
-              </div>
-            )}
+          <div className="italic text-sm mt-8">
+            Các giá trị sẽ được làm tròn thành 5,000 VND gần nhất (vd: 13000 ->
+            15000; 11000 -> 10000)
           </div>
+          {version === "A" && (
+            <div className="mt-8">
+              <div>
+                Xác suất tổ chức thiện nguyện <b>{fieldA}</b> được nhận tiền là{" "}
+                <b>{orgChance}%</b>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex mb-4 mt-4 w-full justify-between">
