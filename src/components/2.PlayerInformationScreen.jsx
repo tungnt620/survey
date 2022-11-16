@@ -23,13 +23,14 @@ const salaries = [
 
 const sexes = ["Nam", "Nữ", "Khác"];
 
-const PlayerInformationScreen = ({ sendMachineEvent }) => {
+const PlayerInformationScreen = ({ stateMachine, sendMachineEvent }) => {
   const { formData, formErrors, validate, setFieldValue } = useFormValidator({
     defaultData: {
       email: "",
       yearOfBirth: null,
       sex: "",
       salary: null,
+      version: stateMachine.context.version,
     },
     rules: {
       email: [formRules.required(), formRules.email()],

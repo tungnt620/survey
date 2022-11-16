@@ -12,7 +12,12 @@ const Game = ({ stateMachine, sendMachineEvent }) => {
     case "intro":
       return <IntroScreen sendMachineEvent={sendMachineEvent} />;
     case "playerInformation":
-      return <PlayerInformationScreen sendMachineEvent={sendMachineEvent} />;
+      return (
+        <PlayerInformationScreen
+          stateMachine={stateMachine}
+          sendMachineEvent={sendMachineEvent}
+        />
+      );
     case "rule1":
       return (
         <Rule1Screen

@@ -137,7 +137,7 @@ const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
           {selectedOrg && (
             <div className="flex mt-8">
               <div className="w-fit">
-                <img src={selectedOrg.img} width={150} />
+                <img key={selectedOrg.img} src={selectedOrg.img} width={150} />
               </div>
               <div className={"w-full flex-auto ml-8"}>
                 <b>Mô tả hoạt động:</b>
