@@ -5,6 +5,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Progress,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "preact/hooks";
@@ -27,7 +28,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
   const version = stateMachine.context.version;
   const [amount, setAmount] = useState(0);
   const [startTime, setStartTime] = useState(null);
-  const [forceNextBtnDisable, setForceNextBtnDisable] = useState(true);
+  const [forceNextBtnDisable, setForceNextBtnDisable] = useState(!window.debug);
 
   useEffect(() => {
     setTimeout(() => {
@@ -164,6 +165,9 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
         >
           Tiếp theo >>
         </Button>
+      </div>
+      <div className="w-full">
+        <Progress hasStripe value={currentQuestionNo} max={25} />
       </div>
       <RuleModal
         stateMachine={stateMachine}
