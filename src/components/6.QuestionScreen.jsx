@@ -1,7 +1,16 @@
 import {
   Box,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
   Slider,
   SliderFilledTrack,
   SliderMark,
@@ -41,7 +50,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
 
   const { status, execute, error } = useCreateAnswer({
     playerId: stateMachine.context.playerId,
-    amount,
+    amount: parseInt(amount),
     fieldM,
     fieldT,
     questionNo: currentQuestionNo,
@@ -55,14 +64,14 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
         sendMachineEvent({
           type: "FINISH",
           payload: {
-            amount,
+            amount: parseInt(amount),
           },
         });
       } else {
         sendMachineEvent({
           type: "NEXT_QUESTION",
           payload: {
-            amount,
+            amount: parseInt(amount),
           },
         });
       }
@@ -78,18 +87,18 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
     execute();
   };
 
-  const amountFormatted = numberFormatter.format(amount);
   const fieldMFormatted = numberFormatter.format(fieldM);
 
   const orgChance = Math.floor(((amount - 5000) / (fieldM - 5000)) * 100);
-  const yourChance = 100 - orgChance;
 
   return (
-    <div className="flex flex-col w-full h-screen">
-      <div className="flex flex-col justify-center w-full h-full items-center">
-        <div className="pr-16 pl-16">
-          <div className="mb-4">
-            <b className={"text-xl"}>Câu {currentQuestionNo}</b>
+    <div className="flex flex-col w-full h-screen p-2 items-center">
+      <div className="flex flex-col justify-center w-full h-full items-center max-w-4xl">
+        <div className="">
+          <div className="mb-4 text-xl flex justify-center">
+            <b className={"text-3xl"}>
+              Câu <span className="text-4xl">{currentQuestionNo}</span>
+            </b>
           </div>
           <div className="mb-4">
             <b>Điền vào chỗ trống:</b>
@@ -97,64 +106,42 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
           <div className="mb-4">
             Tôi thấy{" "}
             <Input readonly={true} width="100px" type="number" value={amount} />{" "}
-            <b>VND</b> cho tôi ngay ngày hôm nay và <b>{fieldMFormatted} VND</b>{" "}
-            cho <b>{fieldA}</b> sau <b>{fieldT} ngày </b> là bằng nhau về giá
-            trị.
+            <b>VND</b> cho tôi ngay ngày hôm nay và{" "}
+            <b className="text-xl text-blue-500">{fieldMFormatted} VND</b> cho{" "}
+            {fieldA} sau <b className="text-xl text-blue-500">{fieldT} ngày </b>{" "}
+            là bằng nhau về giá trị.
           </div>
-          <div className="mt-16 max-w-screen-md">
-            <Slider
-              defaultValue={amount}
-              value={amount}
-              min={5000}
-              max={fieldM}
-              step={5000}
-              onChange={(val) => setAmount(val)}
-            >
-              <SliderMark
-                value={5000}
-                mt={2}
-                ml={-10}
-                fontSize={18}
-                fontWeight="bold"
-              >
-                5,000 VND
-              </SliderMark>
-              <SliderMark
-                value={fieldM}
-                mt={2}
-                ml={-10}
-                fontSize={18}
-                width={"120px"}
-                fontWeight="bold"
-              >
-                {fieldMFormatted} VND
-              </SliderMark>
-              <SliderMark
+          <div className="mt-8 flex items-center flex-col">
+            <FormControl className="mt-4" width="380px">
+              <NumberInput
                 value={amount}
-                textAlign="center"
-                bg="blue.500"
-                color="white"
-                mt="-12"
-                ml="-16"
-                w="32"
-                fontSize={18}
-                borderRadius={4}
+                step={5000}
+                min={5000}
+                max={fieldM}
+                onChange={(valueString) => setAmount(valueString)}
+                onKeyPress={(e) => {
+                  if (e.key === "e") {
+                    e.preventDefault();
+                  }
+                }}
+                size={"lg"}
+                allowMouseWheel
+                className={"border-blue-500"}
               >
-                {amountFormatted} VND
-              </SliderMark>
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb boxSize={8}>
-                <Box color="tomato" as={MdOutlineAttachMoney} size={20} />
-              </SliderThumb>
-            </Slider>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <FormHelperText>
+                Các giá trị sẽ được làm tròn thành 5,000 VND gần nhất (vd: 13000
+                -> 15000; 11000 -> 10000)
+              </FormHelperText>
+            </FormControl>
 
             {version === "A" && (
               <div className="mt-8">
-                {/*<div>*/}
-                {/*  Xác suất bạn được nhận tiền là <b>{yourChance}%</b>*/}
-                {/*</div>*/}
                 <div>
                   Xác suất tổ chức thiện nguyện <b>{fieldA}</b> được nhận tiền
                   là <b>{orgChance}%</b>
@@ -164,14 +151,15 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
           </div>
         </div>
       </div>
-      <div className="flex mb-4 mr-4 mt-4">
-        <div className="pl-16">
-          <Button onClick={onOpen} className="font-bold text-lg">
+      <div className="flex mb-4 mt-4 w-full justify-between">
+        <div className="">
+          <Button size={"lg"} onClick={onOpen} className="font-bold text-lg">
             Xem luật chơi
           </Button>
         </div>
         <div className="flex-1" />
         <Button
+          size={"lg"}
           onClick={onNext}
           disabled={!amount || status === "loading"}
           colorScheme="blue"

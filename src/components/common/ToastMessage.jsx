@@ -14,7 +14,7 @@ const ToastMessage = () => {
       toast({
         title: message,
         status: type,
-        duration: type === "error" ? 1000 * 1000 : 5000,
+        duration: 5000,
         isClosable: true,
       });
     }

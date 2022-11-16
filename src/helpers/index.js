@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+const randomVersion = ["A", "B"][Math.floor(Math.random() * 2)];
+
 export const useGetVersion = () => {
   const currentPathName = window.location.pathname;
 
@@ -7,8 +9,11 @@ export const useGetVersion = () => {
     if (currentPathName === "/version-b") {
       return "B";
     }
+    if (currentPathName === "/version-a") {
+      return "A";
+    }
 
-    return "A";
+    return randomVersion;
   }, [currentPathName]);
 };
 

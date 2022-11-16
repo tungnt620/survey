@@ -35,14 +35,6 @@ export const getGameMachine = ({ version }) => {
       },
       rule1: {
         on: {
-          NEXT: "rule2",
-        },
-        effect({ setContext, event }) {
-          setContext((context) => ({ ...context, ...event.payload }));
-        },
-      },
-      rule2: {
-        on: {
           NEXT_A: {
             target: "rule3",
             guard({ context }) {
@@ -64,6 +56,9 @@ export const getGameMachine = ({ version }) => {
         on: {
           NEXT: "question",
         },
+        effect({ setContext, event }) {
+          setContext((context) => ({ ...context, ...event.payload }));
+        },
       },
       question: {
         on: {
@@ -81,7 +76,9 @@ export const getGameMachine = ({ version }) => {
           },
         },
         effect({ setContext, event, context }) {
-          const { amount } = event.payload || {};
+          console.log("question", event);
+
+          const { amount, fieldA } = event.payload || {};
           const currentQuestionNo = context.currentQuestionNo;
 
           if (amount) {
@@ -94,6 +91,10 @@ export const getGameMachine = ({ version }) => {
               currentQuestionNo: currentQuestionNo + 1,
             }));
           }
+
+          if (fieldA) {
+            setContext((context) => ({ ...context, fieldA }));
+          }
         },
       },
       result: {
@@ -101,6 +102,8 @@ export const getGameMachine = ({ version }) => {
           END: "intro",
         },
         effect({ setContext, event, context }) {
+          console.log("result", event);
+
           const { amount } = event.payload || {};
           const currentQuestionNo = context.currentQuestionNo;
 

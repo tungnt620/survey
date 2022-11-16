@@ -9,41 +9,42 @@ const Rule3Screen = ({ sendMachineEvent }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
-      <div className="flex flex-col justify-center w-full h-full">
+    <div className="flex flex-col w-full h-screen p-2 items-center">
+      <div className="flex flex-col justify-center w-full h-full max-w-4xl">
         <div className="pr-16 pl-16">
-          <div className="mb-4">
-            Diễn giải: Ưu tiên thời gian đối với xã hội nghiên cứu về cách mà xã
-            hội định giá những lợi ích hiện tại so với lợi ích tương lai. Thực
-            tế, giữa phương án có 100,000 VND ngay hôm nay và 100,000 VND sau 1
-            tuần, hầu hết tất cả chúng ta đều sẽ chọn có tiền ngay. Vậy có thể
-            nói, lợi ích xuất hiện trong hiện tại thường được xem là đáng giá
-            hơn là chính nó xuất hiện trong tương lai.
+          <div className="flex justify-center text-xl font-bold text-red-600 mb-8">
+            Vui lòng đọc kỹ nội dung sau đây
+          </div>
+          <div className="mb-6">
+            Nghiên cứu này quan sát cách mà con người đưa ra lựa chọn giữa lợi
+            ích cá nhân trong hiện tại và lợi ích xã hội tương lai. Những câu
+            hỏi trong bài này mô phỏng những quyết định thực tế lớn hơn: như
+            việc tiếp tục dùng nhiên liệu hóa thạch (lợi ích ngay trong thế hệ
+            này), hay đầu tư phát triển nhiên liệu sạch (lợi ích nhiều hơn cho
+            các thế hệ sau).
           </div>
           <div className="mt-4">
-            Mặc dù ưu tiên thời gian của mỗi người có thể dễ dàng được quan sát,
-            ưu tiên thời gian của xã hội là vấn đề phức tạp hơn nhiều. Hiện nay,
-            các nhà kinh tế học thống nhất 3 yếu tố cần xem xét khi xác định ưu
-            tiên thời gian của xã hội là:
+            Theo lý thuyết kinh tế, có hai yếu tố ảnh hưởng đến lựa chọn này:
           </div>
           <UnorderedList className="mt-2">
             <ListItem>
-              <b>Suất chiết khấu thuần túy:</b> thể hiện cho bản tính “thiếu
-              kiên nhẫn” của mỗi con người
+              <b>Bản năng thiếu kiên nhẫn của con người:</b> chúng ta luôn muốn
+              lợi ích ngay lập tức hơn là trong tương lai
             </ListItem>
             <ListItem>
-              <b>Công bằng xã hội:</b> việc lựa chọn giữa tiêu dùng ngay hôm nay
-              hay để dành cho ngày hôm sau bản chất là hoạt động phân chia tài
-              sản giữa xã hội hiện tại và xã hội tương lai. Cụ thể, nếu tương
-              lai giàu hơn thì nên phân phối cho họ ít hơn, còn tương lai nghèo
-              hơn thì nên phân phối cho họ nhiều hơn.
+              <b>Công bằng xã hội:</b> tương tự như phân chia lợi ích nhiều hơn
+              cho người nghèo và ít hơn cho người giàu. Nếu chúng ta cho rằng
+              thế hệ tương lai giàu hơn, thì lý thuyết công bằng cho rằng ta nên
+              đầu tư ít hơn cho họ. Còn nếu thế hệ tương lai nghèo hơn, thì
+              chúng ta nên phân bổ đầu tư nhiều hơn cho họ.
             </ListItem>
           </UnorderedList>
         </div>
       </div>
-      <div className="flex mb-4 mr-4 mt-4">
+      <div className="flex mb-4 mt-4 w-full justify-between">
         <div className="pl-16">
           <Checkbox
+            size={"lg"}
             checked={checked}
             onChange={(event) => setChecked(event.target.checked)}
           >
@@ -52,6 +53,7 @@ const Rule3Screen = ({ sendMachineEvent }) => {
         </div>
         <div className="flex-1" />
         <Button
+          size={"lg"}
           onClick={onNext}
           disabled={!checked}
           colorScheme="blue"

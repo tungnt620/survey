@@ -59,15 +59,15 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
-      <div className="flex flex-col justify-center w-full h-full items-center">
+    <div className="flex flex-col w-full h-screen p-2 items-center">
+      <div className="flex flex-col justify-center w-full h-full items-center max-w-4xl">
         <div className="font-bold text-base mb-4">Some thank you text</div>
         <div className="font-bold text-xl mb-8">
           Phần I: Thông Tin Nhân Khẩu Học (do I need to blind myself from this
           information?)
         </div>
         <div>
-          <FormControl width="400px" isInvalid={!!formErrors.email}>
+          <FormControl w={[300, 400]} isInvalid={!!formErrors.email}>
             <FormLabel>Email</FormLabel>
             <Input
               type="email"
@@ -82,7 +82,7 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
           </FormControl>
           <FormControl
             className="mt-4"
-            width="400px"
+            w={[300, 400]}
             isInvalid={!!formErrors.yearOfBirth}
           >
             <FormLabel>Năm sinh</FormLabel>
@@ -99,7 +99,7 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
           </FormControl>
         </div>
       </div>
-      <div className="flex mb-4 mr-4">
+      <div className="flex mb-4 w-full justify-between">
         <div className="flex-1" />
         <Button
           onClick={onNext}
@@ -109,6 +109,7 @@ const PlayerInformationScreen = ({ sendMachineEvent }) => {
           }
           colorScheme="blue"
           className="font-bold text-lg"
+          size="lg"
         >
           Tiếp theo >>
         </Button>
