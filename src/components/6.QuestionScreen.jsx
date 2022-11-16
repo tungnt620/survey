@@ -1,25 +1,13 @@
 import {
-  Box,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Select,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "preact/hooks";
-import { MdOutlineAttachMoney } from "react-icons/md";
 import RuleModal from "./common/RuleModal.js";
 import { useCreateAnswer } from "../api/index.js";
 import { toastStore } from "../store/toast.js";
@@ -39,6 +27,13 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
   const version = stateMachine.context.version;
   const [amount, setAmount] = useState(0);
   const [startTime, setStartTime] = useState(null);
+  const [forceNextBtnDisable, setForceNextBtnDisable] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setForceNextBtnDisable(false);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     setStartTime(new Date().toISOString());
@@ -163,7 +158,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
         <Button
           size={"lg"}
           onClick={onNext}
-          disabled={!amount || status === "loading"}
+          disabled={!amount || status === "loading" || forceNextBtnDisable}
           colorScheme="blue"
           className="font-bold text-lg"
         >
