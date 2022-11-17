@@ -29,7 +29,7 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
       options.push(i);
     }
     return options[Math.floor(Math.random() * options.length)];
-  }, []);
+  }, [fieldM]);
 
   const fieldYFormatted = numberFormatter.format(fieldY);
   const fieldMFormatted = numberFormatter.format(fieldM);
