@@ -7,11 +7,13 @@ const numberFormatter = new Intl.NumberFormat();
 
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
-const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
-  const playerEmail = stateMachine.context.email;
-  const fieldA = stateMachine.context.fieldA;
-  const questions = stateMachine.context.questions;
-  const answers = stateMachine.context.answer;
+const ResultScreen = ({ context }) => {
+  const playerEmail = context.email;
+  const fieldA = context.fieldA;
+  const questions = context.questions;
+  const answers = context.answer;
+
+  const isDataSynced = answers.length === questions.length;
 
   const fieldX = useMemo(() => random(1, questions.length + 1), []);
   const selectedQuestionIndex = fieldX - 1;
@@ -24,35 +26,36 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
   const fieldT = questions[selectedQuestionIndex].fieldT;
 
   const fieldY = useMemo(() => {
-    const options = [];
-    for (let i = 5000; i <= fieldM; i = i + 5000) {
-      options.push(i);
+    if (isDataSynced) {
+      const options = [];
+      for (let i = 5000; i <= fieldM; i = i + 5000) {
+        options.push(i);
+      }
+      return options[Math.floor(Math.random() * options.length)];
     }
-    return options[Math.floor(Math.random() * options.length)];
-  }, [fieldM]);
+
+    return 0;
+  }, [fieldM, isDataSynced]);
 
   const fieldYFormatted = numberFormatter.format(fieldY);
   const fieldMFormatted = numberFormatter.format(fieldM);
 
   const isSendToOrg = fieldY <= amountFromUser;
 
-  const { status, execute, error } = useUpdatePlayerInfo(
-    stateMachine.context.playerId,
-    {
-      selectedQuestionNo: fieldX,
-      fieldY,
-      fieldM,
-      amountFromUser,
-      fieldT,
-      decision: isSendToOrg ? "sendToOrg" : "sendToUser",
-    }
-  );
+  const { status, execute, error } = useUpdatePlayerInfo();
 
   useEffect(() => {
-    if (answers.length === questions.length) {
-      execute();
+    if (isDataSynced) {
+      execute(context.playerId, {
+        selectedQuestionNo: fieldX,
+        fieldY,
+        fieldM,
+        amountFromUser,
+        fieldT,
+        decision: isSendToOrg ? "sendToOrg" : "sendToUser",
+      });
     }
-  }, [answers]);
+  }, [isDataSynced]);
 
   useEffect(() => {
     if (status === "error") {
@@ -66,7 +69,7 @@ const ResultScreen = ({ stateMachine, sendMachineEvent }) => {
     }
   }, [status]);
 
-  if (answers.length < questions.length) return null;
+  if (!isDataSynced) return null;
 
   return (
     <div className="flex flex-col w-full h-screen p-2 items-center">

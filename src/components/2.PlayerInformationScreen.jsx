@@ -45,7 +45,7 @@ const PlayerInformationScreen = ({ stateMachine, sendMachineEvent }) => {
     },
   });
 
-  const { status, execute, error, data } = useCreatePlayerInfo(formData);
+  const { status, execute, error, data } = useCreatePlayerInfo();
 
   useEffect(() => {
     if (status === "success") {
@@ -72,7 +72,7 @@ const PlayerInformationScreen = ({ stateMachine, sendMachineEvent }) => {
     const { isValid } = validate(formData);
 
     if (isValid) {
-      execute();
+      execute(formData);
     }
   };
 

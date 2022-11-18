@@ -77,21 +77,22 @@ export const getGameMachine = ({ version }) => {
             },
           },
         },
-        effect({ setContext, event, context }) {
+        effect({ setContext, event }) {
           console.log("question", event);
-
           const { amount, fieldA } = event.payload || {};
-          const currentQuestionNo = context.currentQuestionNo;
 
           if (amount) {
-            const newAnswers = [...context.answer];
-            newAnswers[currentQuestionNo - 1] = { amount };
+            setContext((context) => {
+              const currentQuestionNo = context.currentQuestionNo;
+              const newAnswers = [...context.answer];
+              newAnswers[currentQuestionNo - 1] = { amount };
 
-            setContext((context) => ({
-              ...context,
-              answer: newAnswers,
-              currentQuestionNo: currentQuestionNo + 1,
-            }));
+              return {
+                ...context,
+                answer: newAnswers,
+                currentQuestionNo: context.currentQuestionNo + 1,
+              };
+            });
           }
 
           if (fieldA) {
@@ -103,20 +104,21 @@ export const getGameMachine = ({ version }) => {
         on: {
           END: "intro",
         },
-        effect({ setContext, event, context }) {
+        effect({ setContext, event }) {
           console.log("result", event);
-
           const { amount } = event.payload || {};
-          const currentQuestionNo = context.currentQuestionNo;
 
           if (amount) {
-            const newAnswers = [...context.answer];
-            newAnswers[currentQuestionNo - 1] = { amount };
+            setContext((context) => {
+              const currentQuestionNo = context.currentQuestionNo;
+              const newAnswers = [...context.answer];
+              newAnswers[currentQuestionNo - 1] = { amount };
 
-            setContext((context) => ({
-              ...context,
-              answer: newAnswers,
-            }));
+              return {
+                ...context,
+                answer: newAnswers,
+              };
+            });
           }
         },
       },

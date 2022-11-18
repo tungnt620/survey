@@ -69,10 +69,7 @@ const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
     },
   });
 
-  const { status, execute, error } = useUpdatePlayerInfo(
-    stateMachine.context.playerId,
-    formData
-  );
+  const { status, execute, error } = useUpdatePlayerInfo();
 
   useEffect(() => {
     if (status === "success") {
@@ -92,7 +89,7 @@ const Rule1Screen = ({ stateMachine, sendMachineEvent }) => {
     const { isValid } = validate(formData);
 
     if (isValid) {
-      execute();
+      execute(stateMachine.context.playerId, formData);
     }
   };
 

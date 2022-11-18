@@ -15,17 +15,17 @@ import { toastStore } from "../store/toast.js";
 
 const numberFormatter = new Intl.NumberFormat();
 
-const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
-  const fieldA = stateMachine.context.fieldA;
-  const questions = stateMachine.context.questions;
-  const currentQuestionNo = stateMachine.context.currentQuestionNo;
+const QuestionScreen = ({ stateMachine, context, sendMachineEvent }) => {
+  const fieldA = context.fieldA;
+  const questions = context.questions;
+  const currentQuestionNo = context.currentQuestionNo;
   const currentQuestionIndex = currentQuestionNo - 1;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fieldM = questions[currentQuestionIndex].fieldM;
   const fieldT = questions[currentQuestionIndex].fieldT;
 
-  const version = stateMachine.context.version;
+  const version = context.version;
   const [amount, setAmount] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [forceNextBtnDisable, setForceNextBtnDisable] = useState(!window.debug);
@@ -44,15 +44,7 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
     setAmount(fieldM);
   }, [currentQuestionNo, fieldM]);
 
-  const { status, execute, error } = useCreateAnswer({
-    playerId: stateMachine.context.playerId,
-    amount: parseInt(amount),
-    fieldM,
-    fieldT,
-    questionNo: currentQuestionNo,
-    startTime,
-    endTime: new Date().toISOString(),
-  });
+  const { status, execute, error } = useCreateAnswer();
 
   useEffect(() => {
     if (status === "success") {
@@ -80,7 +72,17 @@ const QuestionScreen = ({ stateMachine, sendMachineEvent }) => {
   }, [status]);
 
   const onNext = () => {
-    execute();
+    if (amount && !forceNextBtnDisable) {
+      execute({
+        playerId: context.playerId,
+        amount: parseInt(amount),
+        fieldM,
+        fieldT,
+        questionNo: currentQuestionNo,
+        startTime,
+        endTime: new Date().toISOString(),
+      });
+    }
   };
 
   const fieldMFormatted = numberFormatter.format(fieldM);

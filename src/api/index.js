@@ -1,39 +1,36 @@
 import PocketBase from "pocketbase";
-import { useCallback, useEffect, useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 const client = new PocketBase("https://survey.confession.vn");
 
-export const useQuery = ({ serviceFunc, lazy = false }) => {
+export const useQuery = ({ serviceFunc }) => {
   const [state, setState] = useState({
     status: "",
     error: null,
     data: null,
   });
 
-  const execute = useCallback(async () => {
-    setState({ status: "loading", error: null, data: null });
+  const execute = useCallback(
+    async (...args) => {
+      setState({ status: "loading", error: null, data: null });
 
-    try {
-      const data = await serviceFunc();
+      try {
+        const data = await serviceFunc(...args);
 
-      setState({
-        status: "success",
-        error: null,
-        data,
-      });
-    } catch (error) {
-      setState({
-        status: "error",
-        error,
-        data: null,
-      });
-    }
-  }, [serviceFunc]);
-
-  useEffect(() => {
-    if (!lazy) {
-      execute();
-    }
-  }, [execute, lazy]);
+        setState({
+          status: "success",
+          error: null,
+          data,
+        });
+      } catch (error) {
+        setState({
+          status: "error",
+          error,
+          data: null,
+        });
+      }
+    },
+    [serviceFunc]
+  );
 
   return {
     ...state,
@@ -41,23 +38,21 @@ export const useQuery = ({ serviceFunc, lazy = false }) => {
   };
 };
 
-export const useCreateAnswer = (answer) => {
+export const useCreateAnswer = () => {
   return useQuery({
-    serviceFunc: () => client.records.create("answer", answer),
-    lazy: true,
+    serviceFunc: (answer) => client.records.create("answer", answer),
   });
 };
 
-export const useCreatePlayerInfo = (playerInfo) => {
+export const useCreatePlayerInfo = () => {
   return useQuery({
-    serviceFunc: () => client.records.create("player", playerInfo),
-    lazy: true,
+    serviceFunc: (playerInfo) => client.records.create("player", playerInfo),
   });
 };
 
-export const useUpdatePlayerInfo = (playerId, playerInfo) => {
+export const useUpdatePlayerInfo = () => {
   return useQuery({
-    serviceFunc: () => client.records.update("player", playerId, playerInfo),
-    lazy: true,
+    serviceFunc: (playerId, playerInfo) =>
+      client.records.update("player", playerId, playerInfo),
   });
 };

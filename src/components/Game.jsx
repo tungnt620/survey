@@ -36,6 +36,7 @@ const Game = ({ stateMachine, sendMachineEvent }) => {
       return (
         <QuestionScreen
           key={stateMachine.context.currentQuestionNo}
+          context={stateMachine.context}
           stateMachine={stateMachine}
           sendMachineEvent={sendMachineEvent}
         />
@@ -44,6 +45,7 @@ const Game = ({ stateMachine, sendMachineEvent }) => {
       return (
         <ResultScreen
           stateMachine={stateMachine}
+          context={stateMachine.context}
           sendMachineEvent={sendMachineEvent}
         />
       );
